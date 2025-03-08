@@ -16,14 +16,14 @@ console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); // Add this line to debu
 
 // First, create an app.get route for “/update-cobj”.
 
-app.get('/update-cobj', async (req, res) => {
-    response.send('You are on the update-cobj page');
-});
 
+app.get('/update-cobj', async (req, res) => {
+    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
+});
 
 // Finally, let’s focus on the app.get homepage ("/") route
 app.get('/', async (req, res) => {
-    res.render('index', { title: 'Home', message: 'Hello World - you are on the home page' });
+    res.render('index', { title: 'Film database', message: 'Here is a list of films' });
 });
 
 // ************************************************************************************************

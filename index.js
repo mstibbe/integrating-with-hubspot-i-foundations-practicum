@@ -33,6 +33,11 @@ app.get('/contacts', async (req, res) => {
         const resp = await axios.get(contacts, { headers });
         const data = resp.data;
         res.json(data);
+
+        // Now adding the pug template
+        const results_data = resp.data.results;
+        res.render('contacts', { title: 'Contacts | HubSpot APIs', results_data });      
+
         //res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
     } catch (error) {
         console.error(error);

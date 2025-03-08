@@ -21,9 +21,9 @@ app.get('/', (request, response)=>{
     response.send('Hello World - you are on the home page');
 });
 
-
+// favourite_book
 app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
+    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts?properties=firstname,lastname,email,favourite_book';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
@@ -32,6 +32,7 @@ app.get('/contacts', async (req, res) => {
     try {
         const resp = await axios.get(contacts, { headers });
         const data = resp.data.results;
+        console.log('Fetched data:', data); // Debug log
         res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
     } catch (error) {
         console.error(error);

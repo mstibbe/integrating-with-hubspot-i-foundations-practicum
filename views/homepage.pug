@@ -6,6 +6,16 @@ html(lang="en")
         h1=title
         p=message
 
-        // Add a button to navigate to the contacts page
-        a(href="/update-cobj")
-            button Add/update this table
+        a(href="/update-cobj") Add/Update this table
+        table
+            thead
+                tr
+                    th Name
+                    th Director
+                    th Genre
+            tbody
+                each item in data
+                    tr
+                        td= item.film_name
+                        td= item.director
+                        td= item.genre

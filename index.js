@@ -21,7 +21,8 @@ app.get('/', (request, response)=>{
     response.send('Hello World - you are on the home page');
 });
 
-// favourite_book
+// Note that I'm using British English spelling of Favourite
+// Added some code to pull in the book in the listing view as well
 app.get('/contacts', async (req, res) => {
     const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts?properties=firstname,lastname,email,favourite_book';
     const headers = {
@@ -32,7 +33,7 @@ app.get('/contacts', async (req, res) => {
     try {
         const resp = await axios.get(contacts, { headers });
         const data = resp.data.results;
-        console.log('Fetched data:', data); // Debug log
+        //console.log('Fetched data:', data); // Debug log
         res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
     } catch (error) {
         console.error(error);
@@ -42,39 +43,32 @@ app.get('/contacts', async (req, res) => {
 });
 
 
+app.get('/update', async (req, res) => {
+    // Go to this page to update a live record - http://localhost:3000/update?email=matthew@articulatemarketing.com
+    const email = req.query.email;
 
-// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
-
-// * Code for Route 2 goes here
-
-// TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
-
-// * Code for Route 3 goes here
-
-/** 
-* * This is sample code to give you a reference for how you should structure your calls. 
-
-* * App.get sample
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
+    const getContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email&properties=email,favourite_book`;
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
-    }
+    };
+
     try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
+        const response = await axios.get(getContact, { headers });
+        const data = response.data;
+
+        // res.json(data);
+        res.render('update', {userEmail: data.properties.email, favouriteBook: data.properties.favourite_book});
+        
+    } catch(err) {
+        console.error(err);
     }
 });
 
-* * App.post sample
 app.post('/update', async (req, res) => {
     const update = {
         properties: {
-            "favorite_book": req.body.newVal
+            "favourite_book": req.body.newVal
         }
     }
 
@@ -93,7 +87,6 @@ app.post('/update', async (req, res) => {
     }
 
 });
-*/
 
 
 // * Localhost

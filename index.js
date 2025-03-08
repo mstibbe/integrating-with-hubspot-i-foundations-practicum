@@ -14,10 +14,26 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_KEY;
 console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); // Add this line to debug
 
 
-// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
+// First, create an app.get route for “/update-cobj”.
+
+app.get('/update-cobj', async (req, res) => {
+    response.send('You are on the update-cobj page');
+});
+
+
+// Finally, let’s focus on the app.get homepage ("/") route
+app.get('/', async (req, res) => {
+    res.render('index', { title: 'Home', message: 'Hello World - you are on the home page' });
+});
+
+// ************************************************************************************************
+// Below is tested template code for the contacts-based version 
+// ************************************************************************************************
+
+
 
 // * Code for Route 1 goes here
-app.get('/', (request, response)=>{
+app.get('/hello', (request, response)=>{
     response.send('Hello World - you are on the home page');
 });
 

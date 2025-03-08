@@ -22,6 +22,7 @@ app.get('/', (request, response)=>{
 });
 
 // Note that I'm using British English spelling of Favourite
+// Test to trigger a git push
 // Added some code to pull in the book in the listing view as well
 app.get('/contacts', async (req, res) => {
     const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts?properties=firstname,lastname,email,favourite_book';

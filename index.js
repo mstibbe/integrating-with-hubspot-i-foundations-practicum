@@ -23,7 +23,28 @@ app.get('/update-cobj', async (req, res) => {
 
 // Finally, let’s focus on the app.get homepage ("/") route
 app.get('/', async (req, res) => {
-    res.render('index', { title: 'Film database', message: 'Here is a list of films' });
+
+    // Example data
+    const data = [
+        { film_name: 'Film 1', publisher: 'Director 1', genre: 'Sci-fi' },
+        { film_name: 'Film 2', publisher: 'Director 1', genre: 'Comedy' },
+        { film_name: 'Film 3', publisher: 'Director 1', genre: 'Romance' }
+    ];
+    
+    res.render('homepage', { title: 'Film database', message: 'Here is a list of films', data });
+});
+
+
+// Create a static array for formatting testing
+app.get('/custom-object-table', async (req, res) => {
+    // Example data
+    const data = [
+        { film_name: 'Film 1', publisher: 'Director 1', genre: 'Sci-fi' },
+        { film_name: 'Film 2', publisher: 'Director 1', genre: 'Comedy' },
+        { film_name: 'Film 3', publisher: 'Director 1', genre: 'Romance' }
+    ];
+
+    res.render('custom-object-table', { title: 'Custom Object Table', data });
 });
 
 // ************************************************************************************************

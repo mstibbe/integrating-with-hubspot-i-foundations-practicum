@@ -41,15 +41,9 @@ app.post('/update-film', async (req, res) => {
             }
     }
 
-    const email = req.query.email;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
-
     try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
+        const resp = await axios.post(films, update, { headers } );
+        res.redirect('/homepage');
     } catch(err) {
         console.error(err);
     }
@@ -73,9 +67,6 @@ app.get('/', async (req, res) => {
         } catch (error) {
             console.error(error);
         }
-    
-   
-    
 });
 
 

@@ -15,32 +15,46 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_KEY;
 // console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); 
 
 
-// First, create an app.get route for “/update-cobj”.
-app.get('/update-film', async (req, res) => {
-    // Go to this page to update a live record - http://localhost:3000/update?email=matthew@articulatemarketing.com
-    const email = req.query.email;
+// First, create an app.get route for “/update-cobj (AKA /update-film”.
+app.get('/update-film', (req, res) => {
+    try {
+      res.render('update-film', { pageTitle: 'Update Custom Object Form | Integrating With HubSpot I Practicum', message: 'Welcome to the editing page'  });
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
-    const getContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email&properties=email,favourite_book`;
+
+// Next, let’s focus on the code you’ll write inside of the app.post route.
+app.post('/update-film', async (req, res) => {
+    const films = 'https://api.hubspot.com/crm/v3/objects/p_films';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     };
 
-    try {
-        const response = await axios.get(getContact, { headers });
-        const data = response.data;
+    const data = {
+        properties: {
+            "film_name": req.body.film_name,
+            "director": req.body.director,
+            "genre": req.body.genre,
+            }
+    }
 
-        // res.json(data);
-        res.render('update', {userEmail: data.properties.email, favouriteBook: data.properties.favourite_book});
-        
+    const email = req.query.email;
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
+    try { 
+        await axios.patch(updateContact, update, { headers } );
+        res.redirect('back');
     } catch(err) {
         console.error(err);
     }
-});
 
-//app.get('/update-cobj', async (req, res) => {
-//    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
-//});
+});
 
 // Finally, let’s focus on the app.get homepage ("/") route
 app.get('/', async (req, res) => {
@@ -63,8 +77,6 @@ app.get('/', async (req, res) => {
    
     
 });
-
-
 
 
 // ************************************************************************************************
@@ -139,6 +151,10 @@ app.post('/update', async (req, res) => {
     }
 
 });
+
+//app.get('/update-cobj', async (req, res) => {
+//    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
+//});
 
 
 // * Localhost

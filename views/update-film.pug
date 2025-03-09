@@ -5,10 +5,13 @@ html(lang="en")
         link(rel="stylesheet", href="/css/style.css")
 
     body
+        h1= pageTitle
+        p= message
+
         a(href="/") Return to home page
 
         .form-wrapper
-            form(method="POST")
+            form(action="/update-film" method="POST")
                 label(for="film_name") Film name 
                 input(type="text" name="film_name" required)
 

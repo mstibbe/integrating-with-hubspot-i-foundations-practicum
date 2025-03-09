@@ -27,7 +27,7 @@ app.get('/update-film', (req, res) => {
 
 // Next, let’s focus on the code you’ll write inside of the app.post route.
 app.post('/update-film', async (req, res) => {
-    const films = 'https://api.hubspot.com/crm/v3/objects/p_films';
+    const filmsEndpoint = 'https://api.hubspot.com/crm/v3/objects/p_films';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
@@ -42,8 +42,9 @@ app.post('/update-film', async (req, res) => {
     }
 
     try { 
-        const resp = await axios.post(films, update, { headers } );
-        res.redirect('/homepage');
+        const resp = await axios.post(filmsEndpoint, data, { headers } );
+        console.log('Film added:', resp.data); // Debug log
+        res.redirect('/'); // Redirect to the homepage
     } catch(err) {
         console.error(err);
     }

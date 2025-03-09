@@ -14,7 +14,6 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_KEY;
 // MJS Add following line to debug private key
 // console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); 
 
-
 // First, create an app.get route for “/update-cobj (AKA /update-film”.
 app.get('/update-film', (req, res) => {
     try {
@@ -69,84 +68,6 @@ app.get('/', async (req, res) => {
             console.error(error);
         }
 });
-
-
-// ************************************************************************************************
-// Below is tested template code for the contacts-based version 
-// ************************************************************************************************
-
-
-// Note that I'm using British English spelling of Favourite
-// Test to trigger a git push
-// Added some code to pull in the book in the listing view as well
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts?properties=firstname,lastname,email,favourite_book';
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    }
-
-    try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        //console.log('Fetched data:', data); // Debug log
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
-    }
-
-
-});
-
-
-app.get('/update', async (req, res) => {
-    // Go to this page to update a live record - http://localhost:3000/update?email=matthew@articulatemarketing.com
-    const email = req.query.email;
-
-    const getContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email&properties=email,favourite_book`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
-
-    try {
-        const response = await axios.get(getContact, { headers });
-        const data = response.data;
-
-        // res.json(data);
-        res.render('update', {userEmail: data.properties.email, favouriteBook: data.properties.favourite_book});
-        
-    } catch(err) {
-        console.error(err);
-    }
-});
-
-app.post('/update', async (req, res) => {
-    const update = {
-        properties: {
-            "favourite_book": req.body.newVal
-        }
-    }
-
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
-
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
-    } catch(err) {
-        console.error(err);
-    }
-
-});
-
-//app.get('/update-cobj', async (req, res) => {
-//    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
-//});
 
 
 // * Localhost

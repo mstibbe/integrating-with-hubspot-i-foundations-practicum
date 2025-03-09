@@ -11,11 +11,12 @@ app.use(express.json());
 require('dotenv').config();
 const PRIVATE_APP_ACCESS = process.env.PRIVATE_KEY;
 
-console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); // Add this line to debug
+// MJS Add following line to debug private key
+// console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); 
 
 
 // First, create an app.get route for “/update-cobj”.
-app.get('/update-cobj', async (req, res) => {
+app.get('/update-film', async (req, res) => {
     // Go to this page to update a live record - http://localhost:3000/update?email=matthew@articulatemarketing.com
     const email = req.query.email;
 

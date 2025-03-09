@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+    head
+        title=title 
+        link(rel="stylesheet", href="/css/style.css")
+
+    body
+        a(href="/") Return to home page
+
+        .form-wrapper
+            form(method="POST")
+                label(for="film_name") Film name 
+                input(type="text" name="film_name" required)
+
+                label(for="Director") Director 
+                input(type="text" name="director" required)
+
+                label(for="genre") Genre 
+                input(type="text" name="genre" required)
+
+                input(type="submit" value="Add film")

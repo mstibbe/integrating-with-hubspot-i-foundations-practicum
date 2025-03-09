@@ -16,8 +16,8 @@ html(lang="en")
                     th Director
                     th Genre
             tbody
-                each item in data
+                each film in data
                     tr
-                        td= item.film_name
-                        td= item.director
-                        td= item.genre
+                        td= film.properties.film_name
+                        td= film.properties.director
+                        td= film.properties.genre

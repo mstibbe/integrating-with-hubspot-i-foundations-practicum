@@ -24,28 +24,37 @@ app.get('/update-cobj', async (req, res) => {
 // Finally, let’s focus on the app.get homepage ("/") route
 app.get('/', async (req, res) => {
 
-    // Example data
-    const data = [
-        { film_name: 'Film 1', publisher: 'Director 1', genre: 'Sci-fi' },
-        { film_name: 'Film 2', publisher: 'Director 1', genre: 'Comedy' },
-        { film_name: 'Film 3', publisher: 'Director 1', genre: 'Romance' }
-    ];
+        const films = 'https://api.hubspot.com/crm/v3/objects/p_films?properties=film_name,director,genre';
+        const headers = {
+            Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+            'Content-Type': 'application/json'
+        }
+        // Example data
+        const testdata = [
+            { film_name: 'Film 1', director: 'Director 1', genre: 'Sci-fi' },
+            { film_name: 'Film 2', director: 'Director 1', genre: 'Comedy' },
+            { film_name: 'Film 3', director: 'Director 1', genre: 'Romance' }
+        ];
+
+        try {
+            const resp = await axios.get(films, { headers });
+            const data = resp.data.results;
+            console.log('Fetched data:', data); // Debug log
+            res.render('homepage', { title: 'Film Table', data });  
+
+            // res.render('contacts', { title: 'Film Table', data });  
+            //res.render('homepage', { title: 'Film database', message: 'Here is a list of films', data });
     
-    res.render('homepage', { title: 'Film database', message: 'Here is a list of films', data });
+        } catch (error) {
+            console.error(error);
+        }
+    
+   
+    
 });
 
 
-// Create a static array for formatting testing
-app.get('/custom-object-table', async (req, res) => {
-    // Example data
-    const data = [
-        { film_name: 'Film 1', publisher: 'Director 1', genre: 'Sci-fi' },
-        { film_name: 'Film 2', publisher: 'Director 1', genre: 'Comedy' },
-        { film_name: 'Film 3', publisher: 'Director 1', genre: 'Romance' }
-    ];
 
-    res.render('custom-object-table', { title: 'Custom Object Table', data });
-});
 
 // ************************************************************************************************
 // Below is tested template code for the contacts-based version 

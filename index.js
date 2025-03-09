@@ -15,11 +15,31 @@ console.log('PRIVATE_APP_ACCESS:', PRIVATE_APP_ACCESS); // Add this line to debu
 
 
 // First, create an app.get route for “/update-cobj”.
-
-
 app.get('/update-cobj', async (req, res) => {
-    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
+    // Go to this page to update a live record - http://localhost:3000/update?email=matthew@articulatemarketing.com
+    const email = req.query.email;
+
+    const getContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email&properties=email,favourite_book`;
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
+    try {
+        const response = await axios.get(getContact, { headers });
+        const data = response.data;
+
+        // res.json(data);
+        res.render('update', {userEmail: data.properties.email, favouriteBook: data.properties.favourite_book});
+        
+    } catch(err) {
+        console.error(err);
+    }
 });
+
+//app.get('/update-cobj', async (req, res) => {
+//    res.render('update-cobj', { title: 'Edit films', message: 'Welcome to the editing page' });
+//});
 
 // Finally, let’s focus on the app.get homepage ("/") route
 app.get('/', async (req, res) => {
@@ -29,22 +49,12 @@ app.get('/', async (req, res) => {
             Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
             'Content-Type': 'application/json'
         }
-        // Example data
-        const testdata = [
-            { film_name: 'Film 1', director: 'Director 1', genre: 'Sci-fi' },
-            { film_name: 'Film 2', director: 'Director 1', genre: 'Comedy' },
-            { film_name: 'Film 3', director: 'Director 1', genre: 'Romance' }
-        ];
 
         try {
             const resp = await axios.get(films, { headers });
             const data = resp.data.results;
-            console.log('Fetched data:', data); // Debug log
-            res.render('homepage', { title: 'Film Table', data });  
-
-            // res.render('contacts', { title: 'Film Table', data });  
-            //res.render('homepage', { title: 'Film database', message: 'Here is a list of films', data });
-    
+            // console.log('Fetched data:', data); // Debug log
+            res.render('homepage', { title: 'Film Table', data });      
         } catch (error) {
             console.error(error);
         }
@@ -60,12 +70,6 @@ app.get('/', async (req, res) => {
 // Below is tested template code for the contacts-based version 
 // ************************************************************************************************
 
-
-
-// * Code for Route 1 goes here
-app.get('/hello', (request, response)=>{
-    response.send('Hello World - you are on the home page');
-});
 
 // Note that I'm using British English spelling of Favourite
 // Test to trigger a git push
